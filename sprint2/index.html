@@ -101,7 +101,32 @@
 
     <article class="apartat" id="particions-sistemes">
       <h2>Particions i sistemes de fitxers</h2>
-      <p>Apartat en curs de desenvolupament.</p>
+
+      <div id="particio-1">
+        <h3>2.1 Identificació del nou disc</h3>
+        <p>Identificació del nou disc /dev/sdc de 3 GiB (3.221.225.472 bytes i 6.291.456 sectors), comprovant amb lsblk i fdisk que la mida del sector lògic i físic és de 512 bytes.</p>
+        <img src="../img/Particions1.png" alt="Identificació del nou disc /dev/sdc">
+      </div>
+
+      <div id="particio-2-3">
+        <h3>2.2 Particionat GPT, formatatge i /etc/fstab</h3>
+        <p>Verificació del particionat GPT i del formatatge de les quatre particions (sdc1 i sdc2 en ext4, sdc3 en vfat i sdc4 com a swap) amb les seves etiquetes i UUID, així com la seva configuració permanent a /etc/fstab sense errors de sintaxi.</p>
+        <img src="../img/Particions2.png" alt="Particionat GPT i formatatge de les particions">
+        <img src="../img/Particions3.png" alt="Configuració permanent a /etc/fstab">
+      </div>
+
+      <div id="particio-4">
+        <h3>2.3 Comprovació de muntatges i swap després de reiniciar</h3>
+        <p>Comprovació després de reiniciar que totes les particions s'han muntat automàticament als seus directoris (/srv/projectes, /srv/petits i /mnt/intercanvi) i que la memòria swap (/dev/sdc4 de 510M) està activa.</p>
+        <img src="../img/Particions4.png" alt="Comprovació de muntatges i swap després de reiniciar">
+      </div>
+
+      <div id="particio-5">
+        <h3>2.4 Experiment de fragmentació interna</h3>
+        <p>Resultat de l'experiment de fragmentació interna: tot i que els 1.000 fitxers de 100 bytes ocupen la mateixa mida real de dades (98K) a les dues carpetes, amb blocs de 4096 B (/srv/projectes) ocupen 4,0M al disc, mentre que amb blocs de 1024 B (/srv/petits) només ocupen 1,1M.</p>
+        <img src="../img/Particions5.png" alt="Resultat de l'experiment de fragmentació interna">
+      </div>
+
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
