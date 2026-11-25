@@ -127,6 +127,54 @@
         <img src="../img/Particions5.png" alt="Resultat de l'experiment de fragmentació interna">
       </div>
 
+      <div id="preguntes-finals">
+        <h3>PREGUNTES FINALS</h3>
+
+        <p><strong>1. Quina és la mida exacta del disc /dev/sdc en bytes i en sectors? Quina és la mida del sector lògic i físic?</strong><br>
+        El disc /dev/sdc fa exactament 3.221.225.472 bytes (3 GiB) i té 6.291.456 sectors, amb una mida tant del sector lògic com del físic de 512 bytes.</p>
+
+        <p><strong>2. Per què hem triat una taula de particions GPT i no MBR per a aquest disc?</strong><br>
+        Hem triat GPT perquè permet crear fins a 128 particions primàries sense necessitat de particions esteses, admet discos superiors a 2 TiB i inclou una còpia de seguretat al final del disc amb comprovació CRC32 per evitar corrupcions.</p>
+
+        <p><strong>3. Per què l'opció nofail a /etc/fstab és imprescindible per a discos secundaris en un servidor?</strong><br>
+        L'opció nofail evita que el servidor s'aturi en mode d'emergència durant l'arrencada si el disc secundari falla o es desconnecta, permetent que el sistema arrenqui amb normalitat.</p>
+
+        <p><strong>4. Quines diferències hi ha entre ext4, FAT32 (vfat) i swap pel que fa a permisos, journaling i ús recomanat?</strong><br>
+        ext4 suporta permisos nadius de Linux i té journaling (recomanat per a sistema i dades de Linux); FAT32 (vfat) no té permisos propis ni journaling (ideal per intercanviar fitxers entre sistemes operatius); i swap no és un sistema de fitxers, sinó memòria virtual en disc per ampliar la RAM.</p>
+
+        <p><strong>5. Completa la taula comparativa amb els resultats de l'experiment de fragmentació interna:</strong></p>
+        <table class="taula-apartats">
+          <thead>
+            <tr>
+              <th>Directori</th>
+              <th>Mida del bloc</th>
+              <th>Nombre i mida de fitxers</th>
+              <th>Mida aparent (du -sh)</th>
+              <th>Espai real al disc</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/srv/projectes</td>
+              <td>4096 B</td>
+              <td>1.000 fitxers de 100 B</td>
+              <td>98 KiB</td>
+              <td>4,0 MiB</td>
+            </tr>
+            <tr>
+              <td>/srv/petits</td>
+              <td>1024 B</td>
+              <td>1.000 fitxers de 100 B</td>
+              <td>98 KiB</td>
+              <td>1,1 MiB</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><strong>6. Explica amb les teves paraules per què els mateixos 1.000 fitxers ocupen tant més espai a /srv/projectes que a /srv/petits i en quin cas escolliries cada mida de bloc.</strong><br>
+        Cada fitxer ocupa un bloc sencer desaprofitant la resta (fragmentació interna); per això escolliria blocs de 1024 B per a molts fitxers petits i de 4096 B per a ús general o fitxers grans.</p>
+      </div>
+
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
