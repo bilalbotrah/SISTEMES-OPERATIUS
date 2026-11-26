@@ -189,7 +189,58 @@
 
     <article class="apartat" id="disc-radiologia">
       <h2>El disc de radiologia</h2>
-      <p>Apartat en curs de desenvolupament.</p>
+
+      <div id="radiologia-p1">
+        <p><strong>Pregunta 1:</strong> Un sector és la unitat física d'emmagatzematge més petita que un disc dur o SSD pot llegir o escriure d'una sola vegada, i la seva mida la decideix el fabricant del disc perquè ve fixada pel maquinari, de manera que nosaltres no la podem triar ni modificar en el moment de formatar la partició.</p>
+      </div>
+
+      <div id="radiologia-p2">
+        <p><strong>Pregunta 2:</strong> Segons es pot comprovar a la captura amb l'ordre lsblk, tant el disc /dev/sdb de 2 GiB com les seves dues particions (sdb1 d'1 GiB i sdb2 de 1023 MiB) tenen una mida de sector lògic (LOG-SEC) de 512 bytes i de sector físic (PHY-SEC) de 512 bytes, i el sistema mostra aquests dos valors perquè molts discos físics moderns fabriquen les seves cel·les internes amb sectors de 4096 bytes (sector físic) però cap a l'exterior simulen sectors de 512 bytes (sector lògic) per garantir la compatibilitat amb sistemes operatius i programes antics.</p>
+        <img src="../img/Sprint2Disc2.png" alt="Captura Pregunta 2">
+      </div>
+
+      <div id="radiologia-p3">
+        <p><strong>Pregunta 3:</strong> Un bloc (el que Windows anomena clúster) és la unitat mínima d'assignació amb què treballa el sistema de fitxers formada per un conjunt de sectors consecutius, i es diferencia del sector en el fet que pertany al programari i no al maquinari físic del disc, motiu pel qual la seva mida sí que la triem nosaltres en el moment de formatar la partició.</p>
+      </div>
+
+      <div id="radiologia-p4">
+        <p><strong>Pregunta 4:</strong> Tal com confirmen les sortides dels comandos stat -f /var/particio1 i sudo tune2fs -l /dev/sdb1 a la captura, la partició ext4 creada a classe té una mida de bloc de 2048 bytes (2 KiB), i com que cada sector lògic del disc ocupa 512 bytes, dins de cada bloc hi caben exactament 4 sectors (2048 ÷ 512 = 4).</p>
+        <img src="../img/Sprint2Disc4.png" alt="Captura Pregunta 4">
+      </div>
+
+      <div id="radiologia-p5">
+        <p><strong>Pregunta 5:</strong> Un fitxer de 3.000 bytes a la partició ext4 amb blocs de 2048 bytes ocupa 2 blocs sencers (4096 bytes en total) i deixa 1.096 bytes buits de fragmentació interna, mentre que en una partició NTFS amb clústers de 64 KiB (65.536 bytes) ocupa 1 clúster sencer i deixa 62.536 bytes buits, tenint en compte que cada clúster de 64 KiB està format per 128 sectors de 512 bytes (65536 ÷ 512 = 128).</p>
+      </div>
+
+      <div id="radiologia-exp1">
+        <p><strong>1-</strong> Aquesta captura mostra la comprovació amb sudo fdisk -l /dev/sdb de l'estructura del disc de 2 GiB, on es veu que té una taula de particions MBR (dos) amb dues particions primàries: /dev/sdb1 d'1 GiB de tipus 83 Linux i /dev/sdb2 de 1023 MiB de tipus 7 HPFS/NTFS/exFAT.</p>
+        <img src="../img/Sprint2Disc1.png" alt="Captura 1 del disc de radiologia">
+      </div>
+
+      <div id="radiologia-exp2">
+        <p><strong>2-</strong> Aquesta captura recull la instal·lació de les eines ntfs-3g, el formatatge de la partició /dev/sdb2 en NTFS amb clústers de 64 KiB (-c 65536) i l'etiqueta radiologia mitjançant mkfs.ntfs, i la verificació posterior amb lsblk -f /dev/sdb on es comprova el nou sistema de fitxers i el seu UUID (7652C3CF604ED457).</p>
+        <img src="../img/Sprint2Disc2.png" alt="Captura 2 del disc de radiologia">
+      </div>
+
+      <div id="radiologia-exp3">
+        <p><strong>3-</strong> Aquesta captura evidencia la creació del punt de muntatge /var/particio2, la consulta de l'identificador d'usuari (1000), el muntatge manual de /dev/sdb2 amb ntfs-3g atorgant-ne la propietat a l'usuari, i la comprovació amb stat -f de la mida del clúster de 65536 bytes i amb df -hT de l'estat del muntatge sota el tipus fuseblk.</p>
+        <img src="../img/Sprint2Disc3.png" alt="Captura 3 del disc de radiologia">
+      </div>
+
+      <div id="radiologia-exp4">
+        <p><strong>4-</strong> Aquesta captura mostra la configuració del muntatge permanent al fitxer /etc/fstab utilitzant l'UUID real de sdb2, la verificació sense errors mitjançant sudo findmnt --verify, la revisió de les línies configurades amb grep particio /etc/fstab i la comprovació amb df -hT que ambdues particions queden muntades correctament.</p>
+        <img src="../img/Sprint2Disc4.png" alt="Captura 4 del disc de radiologia">
+      </div>
+
+      <div id="radiologia-exp5">
+        <p><strong>5-</strong> Aquesta captura demostra que després de reiniciar la màquina virtual les dues particions es munten automàticament, i recull la creació del fitxer de prova informe.txt de 3.000 bytes exactes i la comparació de l'espai real ocupat al disc amb du -h, on s'observa que ocupa 4,0K a la partició ext4 davant dels 64K que ocupa a la partició NTFS.</p>
+        <img src="../img/Sprint2Disc5.png" alt="Captura 5 del disc de radiologia">
+      </div>
+
+      <div id="radiologia-p6">
+        <p><strong>Pregunta 6:</strong> Sí que coincideix amb els càlculs (4,0K a ext4 i 64K a NTFS), i a radiologia els volen igualment perquè tracten amb imatges mèdiques DICOM molt grans (de 10 MB a 250 MB) on els clústers de 64 KiB augmenten molt la velocitat de lectura/escriptura i redueixen la fragmentació.</p>
+      </div>
+
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
