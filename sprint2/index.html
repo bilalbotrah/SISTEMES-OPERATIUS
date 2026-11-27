@@ -251,7 +251,53 @@
 
     <article class="apartat" id="recuperacio-fitxers">
       <h2>Recuperació de fitxers després d'un formateig</h2>
-      <p>Apartat en curs de desenvolupament.</p>
+
+      <div id="recuperacio-4-1">
+        <h3>4.1</h3>
+        <p>Aquesta captura mostra la creació del disc virtual disc.img de 200 MiB ple de zeros, el seu formatatge en sistema de fitxers ext4, el muntatge a la carpeta /mnt/prova i el càlcul de les empremtes digitals SHA-256 dels fitxers originals (foto.jpg, apunts.pdf i notes.txt) desades al fitxer originals.sha.</p>
+        <img src="../img/Sprint2Recuperacio1.png" alt="Captura 4.1 de recuperació de fitxers">
+      </div>
+
+      <div id="recuperacio-4-2">
+        <h3>4.2</h3>
+        <p>Aquesta captura evidencia el segon formatatge d'alt nivell realitzat amb mkfs.ext4 -E nodiscard disc.img per reescriure només l'índex del sistema de fitxers sense buidar els blocs de dades, i la comprovació posterior amb ls -l /mnt/prova on es veu que només apareix la carpeta lost+found i el disc sembla aparentment buit.</p>
+        <img src="../img/Sprint2Recuperacio2.png" alt="Captura 4.2 de recuperació de fitxers">
+      </div>
+
+      <div id="recuperacio-4-3">
+        <h3>4.3</h3>
+        <p>Aquesta captura recull l'execució de photorec per recuperar els fitxers esborrats a la carpeta recup.1 i la comparació dels hashes SHA-256 amb originals.sha, demostrant que tant el PDF recuperat (f0262352_Sprint_2_Gesti_de_processos.pdf) com la imatge recuperada (f0058656.png, ja que l'arxiu foto.jpg tenia capçalera interna PNG) tenen exactament el mateix codi hash que els fitxers originals.</p>
+        <img src="../img/Sprint2Recuperacio3.png" alt="Captura 4.3 de recuperació de fitxers">
+      </div>
+
+      <div id="recuperacio-4-4">
+        <h3>4.4</h3>
+        <p>Aquesta captura mostra la cerca directa de text dins de la imatge del disc mitjançant l'ordre strings -e S disc.img | grep pizza, on s'aconsegueix localitzar i mostrar per pantalla la frase oculta del fitxer notes.txt ("El meu secret és que m'encanta la pizza amb pinya") tot i que photorec no l'havia extret.</p>
+        <img src="../img/Sprint2Recuperacio4.png" alt="Captura 4.4 de recuperació de fitxers">
+      </div>
+
+      <div id="recuperacio-4-5">
+        <h3>4.5</h3>
+        <p>Aquesta captura demostra el resultat de l'esborrat de baix nivell després d'omplir tot el disc virtual amb 200 MB de zeros (dd if=/dev/zero), comprovant que en tornar a passar photorec només genera l'informe report.xml sense recuperar cap fitxer i que l'ordre strings amb grep pizza ja no troba cap rastre de text al disc.</p>
+        <img src="../img/Sprint2Recuperacio5.png" alt="Captura 4.5 de recuperació de fitxers">
+      </div>
+
+      <div id="recuperacio-preguntes-finals">
+        <h3>PREGUNTES FINALS</h3>
+
+        <p><strong>Pregunta 1:</strong> Després del formatatge del nivell 3, els fitxers continuaven gravats als sectors i blocs de dades del disc virtual disc.img, ja que l'ordre mkfs.ext4 -E nodiscard només va sobreescriure l'índex lògic del sistema de fitxers (el superbloc i la taula d'inodes) deixant intacte el contingut real fins que s'hi escrigués alguna cosa a sobre.</p>
+
+        <p><strong>Pregunta 2:</strong> Els fitxers recuperats tenen noms diferents dels originals perquè els noms dels arxius i l'estructura de carpetes es guardaven precisament a l'índex del sistema de fitxers que es va esborrar en formatar, de manera que photorec llegeix les dades en brut i assigna a cada fitxer un número basat en el sector on l'ha trobat (i en el cas del PDF, hi afegeix també el títol intern del document).</p>
+
+        <p><strong>Pregunta 3:</strong> Es pot demostrar calculant i comparant el seu hash SHA-256 amb l'ordre sha256sum, ja que aquesta funció genera una empremta digital única de 64 caràcters i, en coincidir exactament el codi hash del fitxer recuperat (05f5d6da...) amb el de l'original desat a originals.sha, queda garantit que són idèntics byte a byte.</p>
+
+        <p><strong>Pregunta 4:</strong> El programa photorec va trobar la imatge i el PDF perquè ambdós formats comencen amb una seqüència fixa de bytes anomenada capçalera que permet identificar-los, mentre que notes.txt és un fitxer de text pla sense capçalera reconeixible, motiu pel qual el vam trobar igualment buscant text llegible directament dins del disc amb l'ordre strings -e S disc.img | grep pizza.</p>
+
+        <p><strong>Pregunta 5:</strong> Al nivell 3 vam realitzar un formatatge d'alt nivell (mkfs.ext4 -E nodiscard), que només crea un índex nou del sistema de fitxers mantenint les dades al disc, mentre que al nivell 5 vam fer un esborrat de baix nivell (dd if=/dev/zero), que sobreescriu tota la superfície del disc amb zeros eliminant definitivament qualsevol dada recuperable.</p>
+
+        <p><strong>Pregunta 6:</strong> Abans de vendre un USB amb fotos personals faria un esborrat de baix nivell (omplint tot el dispositiu de zeros amb dd if=/dev/zero o fent servir shred), perquè un formatatge ràpid d'alt nivell només esborra l'índex i el comprador podria recuperar fàcilment totes les fotografies personals amb programes gratuïts com photorec.</p>
+      </div>
+
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
