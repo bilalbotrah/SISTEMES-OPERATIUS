@@ -39,6 +39,8 @@
         <tr><td>2</td><td><a href="#particions-sistemes">Particions i sistemes de fitxers</a></td></tr>
         <tr><td>3</td><td><a href="#disc-radiologia">3. El disc de radiologia</a></td></tr>
         <tr><td>4</td><td><a href="#recuperacio-fitxers">Recuperació de fitxers després d'un formateig</a></td></tr>
+        <tr><td>5</td><td><a href="#copies-seguretat">5. Còpies de seguretat i automatització</a></td></tr>
+        <tr><td>6</td><td><a href="#usuaris-grups-permisos">6. Gestió d'usuaris i grups i permisos</a></td></tr>
       </tbody>
     </table>
 
@@ -298,6 +300,61 @@
         <p><strong>Pregunta 6:</strong> Abans de vendre un USB amb fotos personals faria un esborrat de baix nivell (omplint tot el dispositiu de zeros amb dd if=/dev/zero o fent servir shred), perquè un formatatge ràpid d'alt nivell només esborra l'índex i el comprador podria recuperar fàcilment totes les fotografies personals amb programes gratuïts com photorec.</p>
       </div>
 
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="copies-seguretat">
+      <h2>5. Còpies de seguretat i automatització</h2>
+
+      <div id="seguretat-5-1">
+        <h3>5.1 Configuració del disc secundari i escenari</h3>
+        <p>Es configura el disc secundari d'1 GB (/dev/sdd) afegint les seves dues particions al fitxer /etc/fstab mitjançant l'UUID de sdd1 (/mnt/copies) i l'etiqueta de sdd2 (LABEL=caixa a /mnt/caixa), s'executa l'script ./crea_sala.sh per preparar l'escenari de la pràctica i es verifica amb lsblk -f /dev/sdd que ambdues particions estan muntades i llestes.</p>
+        <img src="../img/Sprint2Seguretat1.png" alt="Captura 5.1 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-2">
+        <h3>5.2 Còpia completa amb cp i restauració</h3>
+        <p>Es realitza una còpia de seguretat completa de la carpeta ~/sala amb cp -a, es provoca el primer desastre (./desastre.sh 1) que elimina el directori expedients deixant només fotos i notes visible a ls ~/sala, i es restaura la carpeta des de /mnt/copies/sala_cp per recuperar i llegir la clau de la sala 1 (UNA).</p>
+        <img src="../img/Sprint2Seguretat2.png" alt="Captura 5.2 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-3">
+        <h3>5.3 Còpia incremental amb rsync i arxiu d'esborrats</h3>
+        <p>Es posa a prova la còpia incremental amb rsync -av, utilitzant primer el simulacre --delete --dry-run després del desastre 2 per evitar esborrar clau2.txt de la còpia de seguretat, es recupera el fitxer en sentit contrari i es configura l'opció --backup-dir=/mnt/copies/esborrats perquè els fitxers eliminats intencionadament com cita.txt quedin arxivats en una carpeta independent.</p>
+        <img src="../img/Sprint2Seguretat3.png" alt="Captura 5.3 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-4">
+        <h3>5.4 Imatge sector a sector amb dd i restauració</h3>
+        <p>Es crea una imatge exacta sector a sector de la partició /dev/sdd2 amb dd i es comprova amb sha256sum que té el mateix hash que la partició original, demostrant que després que ./desastre.sh 3 formati la caixa forta deixant només lost+found, el bolcat invers de la imatge torna a restaurar el sistema de fitxers intacte i la clau de la sala 3 (SERVEIX).</p>
+        <img src="../img/Sprint2Seguretat4.png" alt="Captura 5.4 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-5">
+        <h3>5.5 Còpies incrementals i restauració amb Déjà Dup</h3>
+        <p>S'instal·la l'aplicació gràfica Déjà Dup (deja-dup), s'afegeix el fitxer segona.txt per generar una segona còpia incremental i s'executa ./desastre.sh 4 per eliminar clau4.txt de ~/sala/notes (comprovant amb cat que ja no existeix) abans de restaurar-lo mitjançant la interfície gràfica de còpies de seguretat.</p>
+        <img src="../img/Sprint2Seguretat5.png" alt="Captura 5.5 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-6">
+        <h3>5.6 Programació automàtica amb cron</h3>
+        <p>Es programa l'execució automàtica de l'script copia_nit.sh mitjançant cron, verificant al registre ~/copies.log que cada execució en segon pla sense terminal escriu la clau de la sala 5 (NO) i deixant configurada al crontab -l la tasca definitiva perquè s'executi cada nit a les 2:00 (0 2 * * * /home/vboxuser/escape/copia_nit.sh).</p>
+        <img src="../img/Sprint2Seguretat6.1.png" alt="Captura 5.6.1 de còpies de seguretat i automatització">
+        <img src="../img/Sprint2Seguretat6.2.png" alt="Captura 5.6.2 de còpies de seguretat i automatització">
+      </div>
+
+      <div id="seguretat-5-7">
+        <h3>5.7 Verificació d'anacron i frase secreta</h3>
+        <p>Es comprova el funcionament d'anacron després de reiniciar la màquina virtual, mostrant l'informe diari generat automàticament a /var/log/informe-sala.log amb l'estat del disc /mnt/copies i la clau de la sala 6 (SERVEIX), la marca de data actualitzada a /var/spool/anacron/cron.daily (20261127) i la frase secreta completa escrita amb echo (UNA CÒPIA NOMÉS SERVEIX SI ES POT RESTAURAR).</p>
+        <img src="../img/Sprint2Seguretat7.png" alt="Captura 5.7 de còpies de seguretat i automatització">
+      </div>
+
+      <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+    </article>
+
+    <article class="apartat" id="usuaris-grups-permisos">
+      <h2>6. Gestió d'usuaris i grups i permisos</h2>
+      <p>Apartat en curs de desenvolupament.</p>
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
     </article>
 
