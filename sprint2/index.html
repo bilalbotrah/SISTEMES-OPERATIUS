@@ -358,37 +358,37 @@
       <div id="permisos-6-1">
         <h3>6.1 Alta d'usuaris i creació de grups</h3>
         <p>Es donen d'alta els tres usuaris (rita, berta i nil) amb sudo adduser, es creen els grups monitors (GID 1004) i socis (GID 1005) amb sudo addgroup, s'assigna la Rita al grup monitors i la Berta i el Nil al grup socis, i es verifica amb id que cada usuari pertany al seu grup corresponent.</p>
-        <img src="../img/Sprint2Permisos1.png" alt="Captura 6.1 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Sprint2Gestio1.png" alt="Captura 6.1 de gestió d'usuaris, grups i permisos">
       </div>
 
       <div id="permisos-6-2">
         <h3>6.2 Consulta de registres i primera clau</h3>
         <p>Es consulten els registres del sistema mitjançant getent passwd rita berta nil i getent group monitors socis, s'obre la porta del nivell 1 obtenint la primera clau (HO), i es bolca la informació dels grups al fitxer ~/llista.txt comprovant el seu contingut amb cat.</p>
-        <img src="../img/Sprint2Permisos2.png" alt="Captura 6.2 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Sprint2Gestio2.png" alt="Captura 6.2 de gestió d'usuaris, grups i permisos">
       </div>
 
       <div id="permisos-6-3">
         <h3>6.3 Reassignació de propietaris i grups</h3>
         <p>S'obre la porta del nivell 2 obtenint la segona clau (FAIG), es reassigna la propietat i el grup del directori /srv/gimnas/rutines a root:monitors amb chgrp i de les fitxes individuals a berta:monitors i nil:monitors amb chown, i es comprova el canvi mitjançant ls -ld i ls -l.</p>
-        <img src="../img/Sprint2Permisos3.png" alt="Captura 6.3 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Sprint2Gestio3.png" alt="Captura 6.3 de gestió d'usuaris, grups i permisos">
       </div>
 
       <div id="permisos-6-4">
         <h3>6.4 Permisos numèrics 640 i control d'accés</h3>
         <p>S'obre la porta del nivell 3 obtenint la tercera clau (TOT), s'apliquen permisos numèrics 640 (-rw-r-----) a berta.txt i nil.txt amb chmod perquè només el propietari pugui llegir i escriure i el grup monitors només llegir, i s'inicia sessió com a berta i rita per verificar el control d'accés.</p>
-        <img src="../img/Sprint2Permisos4.png" alt="Captura 6.4 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Sprint2Gestio4.png" alt="Captura 6.4 de gestió d'usuaris, grups i permisos">
       </div>
 
       <div id="permisos-6-5">
         <h3>6.5 Permís d'escriptura al grup i comprovació amb su -</h3>
         <p>S'obre la porta del nivell 4 obtenint la quarta clau (PEL), s'afegeix permís d'escriptura al grup monitors sobre /srv/gimnas/rutines (chmod g+w), i es comprova entrant amb su - com a rita i berta que la monitora pot crear fitxers dins la carpeta mentre que la sòcia només pot llegir-ne el contingut.</p>
-        <img src="../img/Sprint2Permisos5.png" alt="Captura 6.5 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Spint2Gestio5.png" alt="Captura 6.5 de gestió d'usuaris, grups i permisos">
       </div>
 
       <div id="permisos-6-6">
         <h3>6.6 Plantilla /etc/skel i alta del nou soci pol</h3>
         <p>Es prepara la plantilla d'entorn per a nous usuaris creant el fitxer /etc/skel/benvinguda.txt, es dona d'alta el nou soci pol mitjançant sudo useradd -m -s /bin/bash pol, i es verifica amb sudo ls -a /home/pol i sudo cat /home/pol/benvinguda.txt que la carta de benvinguda s'ha copiat automàticament a la seva carpeta personal.</p>
-        <img src="../img/Sprint2Permisos6.png" alt="Captura 6.6 de gestió d'usuaris, grups i permisos">
+        <img src="../img/Sprint2Gestio6.png" alt="Captura 6.6 de gestió d'usuaris, grups i permisos">
       </div>
 
       <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
